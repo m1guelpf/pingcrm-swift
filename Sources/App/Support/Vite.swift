@@ -1,9 +1,6 @@
 import Leaf
 import Vapor
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 extension Application {
      public var vite: Vite {
