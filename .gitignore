@@ -8,5 +8,7 @@ db.sqlite
 .swiftpm
 .env
 .env.*
-! .env.example
+!.env.example
 .vscode
+node_modules
+Public/build

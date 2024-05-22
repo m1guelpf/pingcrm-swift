@@ -2,10 +2,10 @@ import Vapor
 
 func routes(_ app: Application) throws {
     app.get { req async throws in
-        try await req.view.render("index", ["title": "Hello Vapor!"])
+        return try await req.inertia.render(page: "Index", ["title": "Hello World!"])
     }
 
-    app.get("hello") { req async -> String in
-        "Hello, world!"
+    app.get("hello") { req async throws -> String in
+        try String(data: req.application.vite.content(asset: "Resources/Frontend/app.ts"), encoding: .utf8) ?? ""
     }
 }

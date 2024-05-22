@@ -1,2 +1,7 @@
+.env
 .build/
 .swiftpm/
+README.md
+Dockerfile
+Public/build
+node_modules
