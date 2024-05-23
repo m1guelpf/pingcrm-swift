@@ -1,3 +1,4 @@
+import { route } from 'ziggy-js'
 import { ReactNode } from 'react'
 import { Trash2 } from 'lucide-react'
 import { User } from '@/Types/models'
@@ -21,7 +22,7 @@ const UsersPage = () => {
 			<h1 className="mb-8 text-3xl font-bold">Users</h1>
 			<div className="flex items-center justify-between mb-6">
 				<SearchFilter />
-				<Link className="btn-indigo focus:outline-none" href="/users/create">
+				<Link className="btn-indigo focus:outline-none" href={route('users.create')}>
 					<span>Create</span>
 					<span className="hidden md:inline"> User</span>
 				</Link>
@@ -46,7 +47,7 @@ const UsersPage = () => {
 					{ label: 'Role', name: 'owner', colSpan: 2, renderCell: row => (row.owner ? 'Owner' : 'User') },
 				]}
 				rows={data}
-				getRowDetailsUrl={row => `users/${row.id}/edit`}
+				getRowDetailsUrl={row => route('users.edit', row.id)}
 			/>
 			<Pagination links={links} />
 		</div>

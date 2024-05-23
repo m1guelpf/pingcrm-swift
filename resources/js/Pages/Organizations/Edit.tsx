@@ -1,3 +1,4 @@
+import { route } from 'ziggy-js'
 import Table from '@/Components/Table'
 import { Head } from '@inertiajs/react'
 import Layout from '@/Components/Layout'
@@ -26,26 +27,26 @@ const EditOrganizationPage = () => {
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 
-		put(`organizations/${organization.id}`)
+		put(route('organizations.update', organization.id))
 	}
 
 	const destroy = () => {
 		if (!confirm('Are you sure you want to delete this organization?')) return
 
-		router.delete(`organizations/${organization.id}`)
+		router.delete(route('organizations.destroy', organization.id))
 	}
 
 	const restore = () => {
 		if (!confirm('Are you sure you want to restore this organization?')) return
 
-		router.put(`organizations/${organization.id}/restore`)
+		router.put(route('organizations.restore', organization.id))
 	}
 
 	return (
 		<div>
 			<Head title={data.name} />
 			<h1 className="mb-8 text-3xl font-bold">
-				<Link href="/organizations" className="text-indigo-600 hover:text-indigo-700">
+				<Link href={route('organizations')} className="text-indigo-600 hover:text-indigo-700">
 					Organizations
 				</Link>
 				<span className="mx-2 font-medium text-indigo-600">/</span>
@@ -138,7 +139,7 @@ const EditOrganizationPage = () => {
 			<h2 className="mt-12 mb-6 text-2xl font-bold">Contacts</h2>
 			<Table
 				rows={organization.contacts}
-				getRowDetailsUrl={row => `contacts/${row.id}/edit`}
+				getRowDetailsUrl={row => route('contacts.edit', row.id)}
 				columns={[
 					{ label: 'Name', name: 'name' },
 					{ label: 'City', name: 'city' },

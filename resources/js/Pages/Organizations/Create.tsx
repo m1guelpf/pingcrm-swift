@@ -1,3 +1,4 @@
+import { route } from 'ziggy-js'
 import { ReactNode } from 'react'
 import Layout from '@/Components/Layout'
 import { Link, useForm } from '@inertiajs/react'
@@ -25,7 +26,7 @@ const CreateOrganizationPage = () => {
 	return (
 		<div>
 			<h1 className="mb-8 text-3xl font-bold">
-				<Link href="/organizations" className="text-indigo-600 hover:text-indigo-700">
+				<Link href={route('organizations')} className="text-indigo-600 hover:text-indigo-700">
 					Organizations
 				</Link>
 				<span className="font-medium text-indigo-600"> /</span> Create

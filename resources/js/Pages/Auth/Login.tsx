@@ -1,3 +1,4 @@
+import { route } from 'ziggy-js'
 import Logo from '@/Components/Logo'
 import { FC, FormEvent } from 'react'
 import { Head } from '@inertiajs/react'
@@ -7,15 +8,15 @@ import LoadingButton from '@/Components/Button/LoadingButton'
 
 const LoginPage: FC = () => {
 	const { data, setData, errors, post, processing } = useForm({
-		email: 'johndoe@example.com',
-		password: 'secret',
 		remember: true,
+		password: 'secret',
+		email: 'johndoe@example.com',
 	})
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 
-		post('/login')
+		post(route('login.store'))
 	}
 
 	return (

@@ -1,3 +1,4 @@
+import { route } from 'ziggy-js'
 import { User } from '@/Types/models'
 import Layout from '@/Components/Layout'
 import { FormEvent, ReactNode } from 'react'
@@ -22,14 +23,14 @@ const CreateUserPage = () => {
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 
-		post('/users')
+		post(route('users.store'))
 	}
 
 	return (
 		<div>
 			<div>
 				<h1 className="mb-8 text-3xl font-bold">
-					<Link href="/users" className="text-indigo-600 hover:text-indigo-700">
+					<Link href={route('users')} className="text-indigo-600 hover:text-indigo-700">
 						Users
 					</Link>
 					<span className="font-medium text-indigo-600"> /</span> Create

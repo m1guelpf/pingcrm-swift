@@ -1,3 +1,4 @@
+import { route } from 'ziggy-js'
 import { User } from '@/Types/models'
 import { Head } from '@inertiajs/react'
 import Layout from '@/Components/Layout'
@@ -31,19 +32,19 @@ const EditUserPage = () => {
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 
-		put(`/users/${user.id}`)
+		put(route('users.update', user.id))
 	}
 
 	const destroy = () => {
 		if (!confirm('Are you sure you want to delete this user?')) return
 
-		router.delete(`/users/${user.id}`)
+		router.delete(route('users.destroy', user.id))
 	}
 
 	const restore = () => {
 		if (!confirm('Are you sure you want to restore this user?')) return
 
-		router.put(`/users/${user.id}/restore/`)
+		router.put(route('users.restore', user.id))
 	}
 
 	return (
@@ -51,7 +52,7 @@ const EditUserPage = () => {
 			<Head title={`${data.first_name} ${data.last_name}`} />
 			<div className="flex justify-start max-w-lg mb-8">
 				<h1 className="text-3xl font-bold">
-					<Link href="/users" className="text-indigo-600 hover:text-indigo-700">
+					<Link href={route('users')} className="text-indigo-600 hover:text-indigo-700">
 						Users
 					</Link>
 					<span className="mx-2 font-medium text-indigo-600">/</span>

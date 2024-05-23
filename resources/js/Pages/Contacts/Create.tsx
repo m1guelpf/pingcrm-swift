@@ -1,3 +1,4 @@
+import { route } from 'ziggy-js'
 import Layout from '@/Components/Layout'
 import { Organization } from '@/Types/models'
 import TextInput from '@/Components/Form/TextInput'
@@ -28,7 +29,7 @@ const CreateContactPage = () => {
 	return (
 		<div>
 			<h1 className="mb-8 text-3xl font-bold">
-				<Link href="/contacts" className="text-indigo-600 hover:text-indigo-700">
+				<Link href={route('contacts')} className="text-indigo-600 hover:text-indigo-700">
 					Contacts
 				</Link>
 				<span className="font-medium text-indigo-600"> /</span> Create

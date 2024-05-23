@@ -1,3 +1,4 @@
+import { route } from 'ziggy-js'
 import { ReactNode } from 'react'
 import { Trash2 } from 'lucide-react'
 import Table from '@/Components/Table'
@@ -23,14 +24,14 @@ const ContactsPage = () => {
 			<h1 className="mb-8 text-3xl font-bold">Contacts</h1>
 			<div className="flex items-center justify-between mb-6">
 				<SearchFilter />
-				<Link className="btn-indigo focus:outline-none" href="/contacts/create">
+				<Link className="btn-indigo focus:outline-none" href={route('contacts.create')}>
 					<span>Create</span>
 					<span className="hidden md:inline"> Contact</span>
 				</Link>
 			</div>
 			<Table
 				rows={data}
-				getRowDetailsUrl={row => `contacts/${row.id}/edit`}
+				getRowDetailsUrl={row => route('contacts.edit', row.id)}
 				columns={[
 					{
 						label: 'Name',

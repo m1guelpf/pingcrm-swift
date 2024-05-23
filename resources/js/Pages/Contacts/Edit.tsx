@@ -1,3 +1,4 @@
+import { route } from 'ziggy-js'
 import { Head } from '@inertiajs/react'
 import Layout from '@/Components/Layout'
 import React, { FormEvent, ReactNode } from 'react'
@@ -31,26 +32,26 @@ const EditContactPage = () => {
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 
-		put(`/contacts/${contact.id}`)
+		put(route('contacts.update', contact.id))
 	}
 
 	const destroy = () => {
 		if (!confirm('Are you sure you want to delete this contact?')) return
 
-		router.delete(`/contacts/${contact.id}`)
+		router.delete(route('contacts.destroy', contact.id))
 	}
 
 	function restore() {
 		if (!confirm('Are you sure you want to restore this contact?')) return
 
-		router.put(`contacts/${contact.id}/restore`)
+		router.put(route('contacts.restore', contact.id))
 	}
 
 	return (
 		<div>
 			<Head title={`${data.first_name} ${data.last_name}`} />
 			<h1 className="mb-8 text-3xl font-bold">
-				<Link href="/contacts" className="text-indigo-600 hover:text-indigo-700">
+				<Link href={route('contacts')} className="text-indigo-600 hover:text-indigo-700">
 					Contacts
 				</Link>
 				<span className="mx-2 font-medium text-indigo-600">/</span>

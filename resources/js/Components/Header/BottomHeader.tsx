@@ -1,3 +1,4 @@
+import { route } from 'ziggy-js'
 import { FC, useState } from 'react'
 import { PageProps } from '@/Types/app'
 import { ChevronDown } from 'lucide-react'
@@ -22,13 +23,13 @@ const BottomHeader: FC = () => {
 					<div className="absolute top-0 right-0 left-auto z-20 py-2 mt-8 text-sm whitespace-nowrap bg-white rounded shadow-xl">
 						<Link
 							onClick={() => setMenuOpened(false)}
-							href={`/users/${auth.user.id}/edit`}
+							href={route('users.edit', auth.user.id)}
 							className="block px-6 py-2 hover:bg-indigo-600 hover:text-white"
 						>
 							My Profile
 						</Link>
 						<Link
-							href="/users"
+							href={route('users')}
 							onClick={() => setMenuOpened(false)}
 							className="block px-6 py-2 hover:bg-indigo-600 hover:text-white"
 						>
@@ -36,7 +37,7 @@ const BottomHeader: FC = () => {
 						</Link>
 						<Link
 							as="button"
-							href="/logout"
+							href={route('logout')}
 							method="delete"
 							className="block w-full px-6 py-2 text-left focus:outline-none hover:bg-indigo-600 hover:text-white"
 						>
