@@ -4,15 +4,16 @@ import PackageDescription
 let package = Package(
     name: "pingcrm",
     platforms: [
-       .macOS(.v13)
+        .macOS(.v13),
     ],
     products: [
         .library(name: "Inertia", targets: ["Inertia"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/vapor/vapor.git", from: "4.99.3"),
         .package(url: "https://github.com/vapor/leaf.git", from: "4.3.0"),
+        .package(url: "https://github.com/vapor/vapor.git", from: "4.99.3"),
         .package(url: "https://github.com/apple/swift-nio.git", from: "2.65.0"),
+        .package(url: "https://github.com/apple/swift-crypto.git", "1.0.0"..<"3.0.0"),
     ],
     targets: [
         .target(
@@ -20,6 +21,7 @@ let package = Package(
             dependencies: [
                 .product(name: "Leaf", package: "leaf"),
                 .product(name: "Vapor", package: "vapor"),
+                .product(name: "Crypto", package: "swift-crypto"),
             ],
             path: "./lib",
             swiftSettings: swiftSettings
@@ -35,7 +37,7 @@ let package = Package(
             ],
             path: "./app",
             swiftSettings: swiftSettings
-        )
+        ),
     ]
 )
 

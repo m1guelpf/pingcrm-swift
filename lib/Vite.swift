@@ -1,5 +1,6 @@
 import Leaf
 import Vapor
+import Crypto
 import Foundation
 
 public extension Application {
@@ -60,6 +61,14 @@ public extension Application {
                 window.__vite_plugin_react_preamble_installed__ = true
             </script>
             """
+        }
+
+        public func version() -> String? {
+            guard let data = try? Data(contentsOf: URL(fileURLWithPath: "\(publicPath)/build/manifest.json")) else {
+                return nil
+            }
+
+            return Insecure.MD5.hash(data: data).map { String(format: "%02hhx", $0) }.joined()
         }
 
         private func tags(for asset: String) throws -> String {
@@ -218,8 +227,8 @@ public extension Application {
 
         struct ManifestEntry: Decodable {
             let file: String
-            let name: String
-            let src: String
+            let name: String?
+            let src: String?
             let css: String?
             let isEntry: Bool?
             let imports: [String]?

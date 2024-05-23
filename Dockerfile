@@ -33,7 +33,7 @@ COPY ./package.json ./bun.lockb ./
 RUN NODE_ENV=production bun install
 
 COPY ./resources ./resources
-COPY ./vite.config.js ./tsconfig.json ./
+COPY ./vite.config.js ./tsconfig.json ./tailwind.config.js ./postcss.config.js ./
 RUN NODE_ENV=production bun run build
 
 # ================================
