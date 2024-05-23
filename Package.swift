@@ -2,35 +2,38 @@
 import PackageDescription
 
 let package = Package(
-    name: "vapor-inertia",
+    name: "pingcrm",
     platforms: [
        .macOS(.v13)
     ],
+    products: [
+        .library(name: "Inertia", targets: ["Inertia"]),
+    ],
     dependencies: [
-        // 💧 A server-side Swift web framework.
         .package(url: "https://github.com/vapor/vapor.git", from: "4.99.3"),
-        // 🍃 An expressive, performant, and extensible templating language built for Swift.
         .package(url: "https://github.com/vapor/leaf.git", from: "4.3.0"),
-        // 🔵 Non-blocking, event-driven networking for Swift. Used for custom executors
         .package(url: "https://github.com/apple/swift-nio.git", from: "2.65.0"),
     ],
     targets: [
+        .target(
+            name: "Inertia",
+            dependencies: [
+                .product(name: "Leaf", package: "leaf"),
+                .product(name: "Vapor", package: "vapor"),
+            ],
+            path: "./lib",
+            swiftSettings: swiftSettings
+        ),
         .executableTarget(
             name: "App",
             dependencies: [
+                "Inertia",
                 .product(name: "Leaf", package: "leaf"),
                 .product(name: "Vapor", package: "vapor"),
                 .product(name: "NIOCore", package: "swift-nio"),
                 .product(name: "NIOPosix", package: "swift-nio"),
             ],
-            swiftSettings: swiftSettings
-        ),
-        .testTarget(
-            name: "AppTests",
-            dependencies: [
-                .target(name: "App"),
-                .product(name: "XCTVapor", package: "vapor"),
-            ],
+            path: "./app",
             swiftSettings: swiftSettings
         )
     ]

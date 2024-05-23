@@ -10,14 +10,11 @@
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"noEmit": true,
+		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./Resources/Frontend/*"]
+			"@/*": ["resources/js/*"]
 		},
 		"types": ["node", "vite/client"]
 	},
-	"include": [
-		"Resources/Frontend/**/*.ts",
-		"Resources/Frontend/**/*.tsx",
-		"Resources/Frontend/**/*.d.ts"
-	]
+	"include": ["resources/js/**/*.ts", "resources/js/**/*.tsx", "resources/js/**/*.d.ts"]
 }

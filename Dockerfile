@@ -18,8 +18,8 @@ RUN cp "$(swift build --package-path /build -c release --show-bin-path)/App" ./
 RUN cp "/usr/libexec/swift/linux/swift-backtrace-static" ./
 RUN find -L "$(swift build --package-path /build -c release --show-bin-path)/" -regex '.*\.resources$' -exec cp -Ra {} ./ \;
 
-RUN [ -d /build/Public ] && { mv /build/Public ./Public && chmod -R a-w ./Public; } || true
-RUN [ -d /build/Resources ] && { mv /build/Resources ./Resources && chmod -R a-w ./Resources; } || true
+RUN [ -d /build/public ] && { mv /build/public ./public && chmod -R a-w ./public; } || true
+RUN [ -d /build/resources ] && { mv /build/resources ./resources && chmod -R a-w ./resources; } || true
 
 # ================================
 # Frontend build image
@@ -32,7 +32,7 @@ RUN mkdir Public
 COPY ./package.json ./bun.lockb ./
 RUN NODE_ENV=production bun install
 
-COPY ./Resources/Frontend ./Resources/Frontend
+COPY ./resources ./resources
 COPY ./vite.config.js ./tsconfig.json ./
 RUN NODE_ENV=production bun run build
 
@@ -42,8 +42,8 @@ RUN NODE_ENV=production bun run build
 FROM gcr.io/distroless/cc-debian10
 WORKDIR /app
 
+COPY --from=build-js --chown=vapor:vapor /build/public/build /app/public/build
 COPY --from=build --chown=vapor:vapor /staging /app
-COPY --from=build-js --chown=vapor:vapor /build/Public/build /app/Public/build
 
 ENV SWIFT_BACKTRACE=enable=yes,sanitize=yes,threads=all,images=all,interactive=no,swift-backtrace=./swift-backtrace-static
 
