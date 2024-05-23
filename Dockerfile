@@ -6,7 +6,7 @@ WORKDIR /build
 
 COPY ./Package.* ./
 RUN swift package resolve \
-    $([ -f ./Package.resolved ] && echo "--force-resolved-versions" || true)
+	$([ -f ./Package.resolved ] && echo "--force-resolved-versions" || true)
 
 COPY . .
 
