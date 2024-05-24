@@ -1,10 +1,11 @@
-import { FC } from 'react'
-import { PageProps } from '@/Types/app'
-import { Head, usePage } from '@inertiajs/react'
+import { Page } from '@/Types/app'
+import { Head } from '@inertiajs/react'
 
-const ErrorPage: FC = () => {
-	const { status } = usePage<PageProps<{ status: number }>>().props
+type Props = {
+	status: number
+}
 
+const ErrorPage: Page<Props> = ({ status }) => {
 	const title = {
 		503: '503: Service Unavailable',
 		500: '500: Server Error',

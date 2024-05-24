@@ -1,7 +1,7 @@
 import defaultTheme from 'tailwindcss/defaultTheme'
 
 export default {
-	content: ['./resources/**/*.{js,jsx,ts,tsx,leaf}'],
+	content: ['./resources/**/*.{ts,tsx,leaf}'],
 	theme: {
 		extend: {
 			colors: {

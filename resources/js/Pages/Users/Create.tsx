@@ -1,4 +1,5 @@
 import { route } from 'ziggy-js'
+import { Page } from '@/Types/app'
 import { User } from '@/Types/models'
 import Layout from '@/Components/Layout'
 import { FormEvent, ReactNode } from 'react'
@@ -10,7 +11,7 @@ import LoadingButton from '@/Components/Button/LoadingButton'
 
 type NewUser = Omit<User, 'id' | 'photo' | 'account' | 'name' | 'deleted_at'> & { photo: File | null; password: string }
 
-const CreateUserPage = () => {
+const CreateUserPage: Page = () => {
 	const { data, setData, errors, post, processing } = useForm<NewUser>({
 		email: '',
 		owner: '0',

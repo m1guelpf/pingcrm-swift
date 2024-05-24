@@ -1,12 +1,13 @@
 import { route } from 'ziggy-js'
 import { ReactNode } from 'react'
+import { Page } from '@/Types/app'
 import Layout from '@/Components/Layout'
 import { Link, useForm } from '@inertiajs/react'
 import TextInput from '@/Components/Form/TextInput'
 import SelectInput from '@/Components/Form/SelectInput'
 import LoadingButton from '@/Components/Button/LoadingButton'
 
-const CreateOrganizationPage = () => {
+const CreateOrganizationPage: Page = () => {
 	const { data, setData, errors, post, processing } = useForm({
 		name: '',
 		city: '',

@@ -1,18 +1,22 @@
 import { route } from 'ziggy-js'
+import { Page } from '@/Types/app'
 import Table from '@/Components/Table'
 import { Head } from '@inertiajs/react'
 import Layout from '@/Components/Layout'
+import { FormEvent, ReactNode } from 'react'
 import { Organization } from '@/Types/models'
-import React, { FormEvent, ReactNode } from 'react'
 import TextInput from '@/Components/Form/TextInput'
 import SelectInput from '@/Components/Form/SelectInput'
+import { Link, useForm, router } from '@inertiajs/react'
 import DeleteButton from '@/Components/Button/DeleteButton'
 import LoadingButton from '@/Components/Button/LoadingButton'
-import { Link, usePage, useForm, router } from '@inertiajs/react'
 import TrashedMessage from '@/Components/Messages/TrashedMessage'
 
-const EditOrganizationPage = () => {
-	const { organization } = usePage<{ organization: Organization }>().props
+type Props = {
+	organization: Organization
+}
+
+const EditOrganizationPage: Page<Props> = ({ organization }) => {
 	const { data, setData, errors, put, processing } = useForm({
 		name: organization.name || '',
 		city: organization.city || '',

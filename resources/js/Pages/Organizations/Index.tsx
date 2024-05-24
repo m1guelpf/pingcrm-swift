@@ -2,28 +2,28 @@ import { route } from 'ziggy-js'
 import { ReactNode } from 'react'
 import { Trash2 } from 'lucide-react'
 import Table from '@/Components/Table'
+import { Link } from '@inertiajs/react'
 import Layout from '@/Components/Layout'
-import { PaginatedData } from '@/Types/app'
 import { Organization } from '@/Types/models'
-import { Link, usePage } from '@inertiajs/react'
+import FilterBar from '@/Components/FilterBar'
 import Pagination from '@/Components/Pagination'
-import SearchFilter from '@/Components/SearchFilter'
+import { Page, PaginatedData } from '@/Types/app'
 
-const OrganizationsPage = () => {
-	const { organizations } = usePage<{
-		organizations: PaginatedData<Organization>
-	}>().props
+type Props = {
+	organizations: PaginatedData<Organization>
+}
 
-	const {
+const OrganizationsPage: Page<Props> = ({
+	organizations: {
 		data,
 		meta: { links },
-	} = organizations
-
+	},
+}) => {
 	return (
 		<div>
 			<h1 className="mb-8 text-3xl font-bold">Organizations</h1>
 			<div className="flex items-center justify-between mb-6">
-				<SearchFilter />
+				<FilterBar />
 				<Link className="btn-indigo focus:outline-none" href={route('organizations.create')}>
 					<span>Create</span>
 					<span className="hidden md:inline"> Organization</span>

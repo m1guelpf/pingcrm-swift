@@ -1,4 +1,5 @@
 import { route } from 'ziggy-js'
+import { Page } from '@/Types/app'
 import { User } from '@/Types/models'
 import { Head } from '@inertiajs/react'
 import Layout from '@/Components/Layout'
@@ -6,19 +7,21 @@ import { FormEvent, ReactNode } from 'react'
 import TextInput from '@/Components/Form/TextInput'
 import FileInput from '@/Components/Form/FileInput'
 import SelectInput from '@/Components/Form/SelectInput'
+import { Link, useForm, router } from '@inertiajs/react'
 import DeleteButton from '@/Components/Button/DeleteButton'
 import LoadingButton from '@/Components/Button/LoadingButton'
-import { Link, usePage, useForm, router } from '@inertiajs/react'
 import TrashedMessage from '@/Components/Messages/TrashedMessage'
 
 type EditedUser = Omit<User, 'id' | 'photo' | 'account' | 'name' | 'deleted_at'> & {
-	photo: File | null
 	password: string
+	photo: File | null
 }
 
-const EditUserPage = () => {
-	const { user } = usePage<{ user: User & { password: string } }>().props
+type Props = {
+	user: User & { password: string }
+}
 
+const EditUserPage: Page<Props> = ({ user }) => {
 	//@TODO: Make sure file uploads work
 	const { data, setData, errors, put, processing } = useForm<EditedUser>({
 		photo: null,

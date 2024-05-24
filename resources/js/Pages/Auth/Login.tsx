@@ -1,12 +1,13 @@
 import { route } from 'ziggy-js'
+import { FormEvent } from 'react'
+import { Page } from '@/Types/app'
 import Logo from '@/Components/Logo'
-import { FC, FormEvent } from 'react'
 import { Head } from '@inertiajs/react'
 import { useForm } from '@inertiajs/react'
 import TextInput from '@/Components/Form/TextInput'
 import LoadingButton from '@/Components/Button/LoadingButton'
 
-const LoginPage: FC = () => {
+const LoginPage: Page = () => {
 	const { data, setData, errors, post, processing } = useForm({
 		remember: true,
 		password: 'secret',

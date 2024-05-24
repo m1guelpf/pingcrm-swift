@@ -11,4 +11,5 @@ db.sqlite
 !.env.example
 .vscode
 node_modules
-Public/build
+public/build
+public/hot

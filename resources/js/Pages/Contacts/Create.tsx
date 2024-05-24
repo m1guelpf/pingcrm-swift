@@ -1,13 +1,17 @@
 import { route } from 'ziggy-js'
+import { Page } from '@/Types/app'
 import Layout from '@/Components/Layout'
 import { Organization } from '@/Types/models'
+import { Link, useForm } from '@inertiajs/react'
 import TextInput from '@/Components/Form/TextInput'
 import SelectInput from '@/Components/Form/SelectInput'
-import { Link, usePage, useForm } from '@inertiajs/react'
 import LoadingButton from '@/Components/Button/LoadingButton'
 
-const CreateContactPage = () => {
-	const { organizations } = usePage<{ organizations: Organization[] }>().props
+type Props = {
+	organizations: Organization[]
+}
+
+const CreateContactPage: Page<Props> = ({ organizations }) => {
 	const { data, setData, errors, post, processing } = useForm({
 		city: '',
 		email: '',

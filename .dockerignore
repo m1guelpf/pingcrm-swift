@@ -3,5 +3,6 @@
 .swiftpm/
 README.md
 Dockerfile
-Public/build
+public/build
+public/hot
 node_modules

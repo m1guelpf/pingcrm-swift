@@ -1,20 +1,19 @@
 import clsx from 'clsx'
+import { route } from 'ziggy-js'
 import { usePrevious } from 'react-use'
 import { ChevronDown } from 'lucide-react'
 import { usePage, router } from '@inertiajs/react'
 import SelectInput from '@/Components/Form/SelectInput'
 import { useState, useEffect, FC, ChangeEvent } from 'react'
 
-const SearchFilter: FC = () => {
-	const {
-		props: { filters },
-		url,
-	} = usePage<{
-		filters: { role?: string; search?: string; trashed?: string }
-	}>()
+type PageProps = {
+	filters: { role?: string; search?: string; trashed?: string }
+}
+
+const FilterBar: FC = () => {
+	const { filters } = usePage<PageProps>().props
 
 	const [opened, setOpened] = useState(false)
-
 	const [values, setValues] = useState({
 		role: filters.role || '', // role is used only on users page
 		search: filters.search || '',
@@ -29,7 +28,7 @@ const SearchFilter: FC = () => {
 		if (!prevValues) return
 
 		const query = Object.keys(pickBy(values)).length ? pickBy(values) : { remember: 'forget' }
-		router.get(url, query, { replace: true, preserveState: true })
+		router.get(route(route().current() as string), query, { replace: true, preserveState: true })
 	}, [values])
 
 	const handleChange = (e: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
@@ -108,4 +107,4 @@ const pickBy = <T extends Record<string, unknown>>(object: T): T => {
 		.reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {}) as T
 }
 
-export default SearchFilter
+export default FilterBar

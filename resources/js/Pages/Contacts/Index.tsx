@@ -2,18 +2,18 @@ import { route } from 'ziggy-js'
 import { ReactNode } from 'react'
 import { Trash2 } from 'lucide-react'
 import Table from '@/Components/Table'
+import { Link } from '@inertiajs/react'
 import { Contact } from '@/Types/models'
 import Layout from '@/Components/Layout'
-import { PaginatedData } from '@/Types/app'
-import { Link, usePage } from '@inertiajs/react'
+import FilterBar from '@/Components/FilterBar'
 import Pagination from '@/Components/Pagination'
-import SearchFilter from '@/Components/SearchFilter'
+import { Page, PaginatedData } from '@/Types/app'
 
-const ContactsPage = () => {
-	const { contacts } = usePage<{
-		contacts: PaginatedData<Contact>
-	}>().props
+type Props = {
+	contacts: PaginatedData<Contact>
+}
 
+const ContactsPage: Page<Props> = ({ contacts }) => {
 	const {
 		data,
 		meta: { links },
@@ -23,7 +23,7 @@ const ContactsPage = () => {
 		<div>
 			<h1 className="mb-8 text-3xl font-bold">Contacts</h1>
 			<div className="flex items-center justify-between mb-6">
-				<SearchFilter />
+				<FilterBar />
 				<Link className="btn-indigo focus:outline-none" href={route('contacts.create')}>
 					<span>Create</span>
 					<span className="hidden md:inline"> Contact</span>

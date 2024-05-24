@@ -1,4 +1,5 @@
 import { User } from './models'
+import { FC, ReactNode } from 'react'
 
 export type PaginatedData<T> = {
 	data: T[]
@@ -34,4 +35,8 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
 		success: string | null
 		error: string | null
 	}
+}
+
+export type Page<T extends Record<string, unknown> = Record<string, unknown>> = FC<PageProps<T>> & {
+	layout?: (page: ReactNode) => JSX.Element
 }

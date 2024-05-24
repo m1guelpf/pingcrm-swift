@@ -33,8 +33,8 @@ const MenuItem = ({ icon, link, text }: MainMenuItemProps) => {
 			<Link href={route(link)} className="flex items-center group py-3 space-x-3">
 				<div
 					className={clsx({
-						'text-white fill-current': isActive,
-						'text-indigo-400 group-hover:text-white fill-current': !isActive,
+						'text-white': isActive,
+						'text-indigo-400 group-hover:text-white': !isActive,
 					})}
 				>
 					{icon}

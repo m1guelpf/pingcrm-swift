@@ -1,8 +1,9 @@
 import { ReactNode } from 'react'
+import { Page } from '@/Types/app'
 import { Link } from '@inertiajs/react'
 import Layout from '@/Components/Layout'
 
-const DashboardPage = () => (
+const DashboardPage: Page = () => (
 	<div>
 		<h1 className="mb-8 text-3xl font-bold">Dashboard</h1>
 		<p className="mb-12 leading-normal">

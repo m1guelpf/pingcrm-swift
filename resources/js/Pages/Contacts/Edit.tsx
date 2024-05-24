@@ -1,21 +1,22 @@
 import { route } from 'ziggy-js'
+import { Page } from '@/Types/app'
 import { Head } from '@inertiajs/react'
 import Layout from '@/Components/Layout'
-import React, { FormEvent, ReactNode } from 'react'
+import { FormEvent, ReactNode } from 'react'
 import TextInput from '@/Components/Form/TextInput'
 import { Contact, Organization } from '@/Types/models'
 import SelectInput from '@/Components/Form/SelectInput'
+import { Link, useForm, router } from '@inertiajs/react'
 import DeleteButton from '@/Components/Button/DeleteButton'
 import LoadingButton from '@/Components/Button/LoadingButton'
-import { Link, usePage, useForm, router } from '@inertiajs/react'
 import TrashedMessage from '@/Components/Messages/TrashedMessage'
 
-const EditContactPage = () => {
-	const { contact, organizations } = usePage<{
-		contact: Contact
-		organizations: Organization[]
-	}>().props
+type Props = {
+	contact: Contact
+	organizations: Organization[]
+}
 
+const EditContactPage: Page<Props> = ({ contact, organizations }) => {
 	const { data, setData, errors, put, processing } = useForm({
 		city: contact.city || '',
 		email: contact.email || '',
