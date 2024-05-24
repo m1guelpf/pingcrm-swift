@@ -1,46 +1,59 @@
 {
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "format": "prettier --write ."
-  },
-  "devDependencies": {
-    "@tailwindcss/forms": "^0.5.7",
-    "@types/node": "^20.12.12",
-    "@types/react": "^18.3.2",
-    "@types/react-dom": "^18.3.0",
-    "autoprefixer": "^10.4.19",
-    "laravel-vite-plugin": "^1.0",
-    "postcss": "^8.4.38",
-    "prettier": "^3.2.5",
-    "prettier-plugin-sort-imports-desc": "^1.0.0",
-    "typescript": "^5.4.5",
-    "vite": "^5.0"
-  },
-  "dependencies": {
-    "@inertiajs/react": "^1.0.16",
-    "@vitejs/plugin-react": "^4.2.1",
-    "clsx": "^2.1.1",
-    "lucide-react": "^0.379.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-use": "^17.5.0",
-    "tailwindcss": "^3.4.3",
-    "ziggy-js": "^2.2.1"
-  },
-  "prettier": {
-    "semi": false,
-    "tabWidth": 4,
-    "useTabs": true,
-    "printWidth": 120,
-    "singleQuote": true,
-    "arrowParens": "avoid",
-    "trailingComma": "es5",
-    "bracketSpacing": true,
-    "plugins": [
-      "prettier-plugin-sort-imports-desc"
-    ]
-  }
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"format": "prettier --write .",
+		"lint": "eslint ."
+	},
+	"dependencies": {
+		"@inertiajs/react": "^1.0.16",
+		"@vitejs/plugin-react": "^4.3.0",
+		"clsx": "^2.1.1",
+		"lucide-react": "^0.379.0",
+		"react": "rc",
+		"react-dom": "rc",
+		"react-use": "^17.5.0",
+		"tailwindcss": "^3.4.3",
+		"ziggy-js": "^2.2.1"
+	},
+	"devDependencies": {
+		"@tailwindcss/forms": "^0.5.7",
+		"@types/bun": "latest",
+		"@types/node": "^20.12.12",
+		"@types/react": "npm:types-react@rc",
+		"@types/react-dom": "npm:types-react-dom@rc",
+		"autoprefixer": "^10.4.19",
+		"babel-plugin-react-compiler": "latest",
+		"eslint": "8.x",
+		"eslint-plugin-react": "^7.34.1",
+		"eslint-plugin-react-compiler": "latest",
+		"eslint-plugin-react-hooks": "^4.6.2",
+		"eslint-plugin-react-refresh": "^0.4.7",
+		"laravel-vite-plugin": "^1.0",
+		"postcss": "^8.4.38",
+		"prettier": "^3.2.5",
+		"prettier-plugin-sort-imports-desc": "^1.0.0",
+		"typescript": "^5.4.5",
+		"typescript-eslint": "^7.10.0",
+		"vite": "^5.0"
+	},
+	"overrides": {
+		"@types/react": "npm:types-react@rc",
+		"@types/react-dom": "npm:types-react-dom@rc"
+	},
+	"prettier": {
+		"semi": false,
+		"tabWidth": 4,
+		"useTabs": true,
+		"printWidth": 120,
+		"singleQuote": true,
+		"arrowParens": "avoid",
+		"trailingComma": "es5",
+		"bracketSpacing": true,
+		"plugins": [
+			"prettier-plugin-sort-imports-desc"
+		]
+	}
 }

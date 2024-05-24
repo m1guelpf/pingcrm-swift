@@ -11,6 +11,8 @@ type PageProps = {
 }
 
 const FilterBar: FC = () => {
+	'use no memo'
+
 	const { filters } = usePage<PageProps>().props
 
 	const [opened, setOpened] = useState(false)
@@ -29,6 +31,7 @@ const FilterBar: FC = () => {
 
 		const query = Object.keys(pickBy(values)).length ? pickBy(values) : { remember: 'forget' }
 		router.get(route(route().current() as string), query, { replace: true, preserveState: true })
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [values])
 
 	const handleChange = (e: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
@@ -45,7 +48,7 @@ const FilterBar: FC = () => {
 				<div className={clsx(`absolute top-full`, opened ? '' : 'hidden')}>
 					<div onClick={() => setOpened(false)} className="fixed inset-0 z-20 bg-black opacity-25" />
 					<div className="relative z-30 w-64 px-4 py-6 mt-2 bg-white rounded shadow-lg space-y-4">
-						{filters.hasOwnProperty('role') && (
+						{filters.role && (
 							<SelectInput
 								name="role"
 								label="Role"
@@ -103,7 +106,7 @@ const FilterBar: FC = () => {
 
 const pickBy = <T extends Record<string, unknown>>(object: T): T => {
 	return Object.entries(object)
-		.filter(([k, v]) => v)
+		.filter(([, v]) => v)
 		.reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {}) as T
 }
 

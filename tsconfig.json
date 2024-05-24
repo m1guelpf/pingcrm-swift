@@ -6,6 +6,7 @@
 		"jsx": "react-jsx",
 		"strict": true,
 		"isolatedModules": true,
+		"strictNullChecks": true,
 		"target": "ESNext",
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,

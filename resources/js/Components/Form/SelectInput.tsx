@@ -20,6 +20,7 @@ const SelectInput: FC<Props> = ({ name, label, className, error, options = [], .
 				{...props}
 				name={name}
 				className={clsx(
+					className,
 					error && 'border-red-400 focus:border-red-400 focus:ring-red-400',
 					'form-select w-full focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:border-indigo-400 border-gray-300 rounded'
 				)}

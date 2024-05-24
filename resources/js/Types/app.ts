@@ -1,5 +1,5 @@
-import { User } from './models'
-import { FC, ReactNode } from 'react'
+import type { User } from './models'
+import type { FC, ReactNode, JSX } from 'react'
 
 export type PaginatedData<T> = {
 	data: T[]

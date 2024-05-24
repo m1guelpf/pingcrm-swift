@@ -9,6 +9,8 @@ type Props = Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> &
 }
 
 const FileInput: FC<Props> = ({ className, name, label, accept, error, onChange, value }) => {
+	'use no memo'
+
 	const fileInput = useRef<HTMLInputElement>(null)
 	const [file, setFile] = useState<File | null>(value)
 

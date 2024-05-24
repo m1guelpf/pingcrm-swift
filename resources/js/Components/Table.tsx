@@ -51,12 +51,14 @@ const Table = <T,>({ columns = [], rows = [], getRowDetailsUrl }: TableProps<T>)
 								)
 							})}
 							<td className="w-px border-t">
-								<Link
-									href={getRowDetailsUrl?.(row)!}
-									className="flex items-center px-4 focus:outline-none"
-								>
-									<ChevronRight size={24} className="text-gray-400" />
-								</Link>
+								{getRowDetailsUrl && (
+									<Link
+										href={getRowDetailsUrl(row)}
+										className="flex items-center px-4 focus:outline-none"
+									>
+										<ChevronRight size={24} className="text-gray-400" />
+									</Link>
+								)}
 							</td>
 						</tr>
 					)
