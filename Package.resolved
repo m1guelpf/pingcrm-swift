@@ -1,5 +1,5 @@
 {
-  "originHash" : "b2586a4429b413ed99dc68d20f0c7e6813d7813b0b2c7dd79d514a6820608ade",
+  "originHash" : "a85a8a996d529818d80ae1726ae1ff89024fde2a265d77d031c7f7f8b0174e6d",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -206,6 +206,15 @@
       "state" : {
         "revision" : "4232d34efa49f633ba61afde365d3896fc7f8740",
         "version" : "2.15.0"
+      }
+    },
+    {
+      "identity" : "ziggy-vapor",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/m1guelpf/ziggy-vapor.git",
+      "state" : {
+        "revision" : "1ea00fcd7f05d4c96fdabd5bedfd4c5044008706",
+        "version" : "1.0.0"
       }
     }
   ],

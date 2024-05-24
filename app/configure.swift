@@ -1,5 +1,6 @@
 import Leaf
 import Vapor
+import Ziggy
 import Inertia
 
 // configures your application
