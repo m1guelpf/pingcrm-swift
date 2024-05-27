@@ -12,8 +12,7 @@ enum LoginController {
 		try User.ModelCredentials.validate(content: req)
 		let credentials = try req.content.decode(User.ModelCredentials.self)
 		guard let user = try await User.query(on: req.db).filter(\.$email == credentials.email).first(), try user.verify(password: credentials.password) else {
-
-			throw Abort(.unauthorized)
+			try Validation.fail(for: "password", message: "These credentials do not match our records.")
 		}
 
 		req.auth.login(user)

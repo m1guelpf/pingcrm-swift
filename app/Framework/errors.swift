@@ -4,6 +4,21 @@ protocol RenderableError: Error {
 	func render(req: Request) async -> Response
 }
 
+struct ErrorRenderer: AsyncMiddleware {
+	func respond(to request: Request, chainingTo next: any AsyncResponder) async throws -> Response {
+		return try await Result { try await next.respond(to: request) }
+			.flatMapError { error in
+				guard let renderableError = error as? RenderableError else {
+					return Result { throw error }
+				}
+
+				let response = await renderableError.render(req: request)
+				response.error = error
+				return Result { response }
+			}.get()
+	}
+}
+
 struct ErrorMiddleware: AsyncMiddleware {
 	let environment: Environment
 
@@ -35,16 +50,40 @@ struct ErrorMiddleware: AsyncMiddleware {
 		// Report the error
 		request.logger.report(error: error, file: source.file, function: source.function, line: source.line)
 
-		if let renderableError = error as? RenderableError {
-			return await renderableError.render(req: request)
-		}
-
 		return Response(status: status, headers: headers, body: .init(string: reason))
 	}
 
 	func respond(to request: Request, chainingTo next: any AsyncResponder) async throws -> Response {
-		return await Result { try await next.respond(to: request) }
+		let response = await Result { try await next.respond(to: request) }
 			.orElse { error in await handle(error, for: request) }
+
+		// Renderable errors aren't thrown, but they still need to be reported
+		if let error = response.error {
+			_ = await handle(error, for: request)
+		}
+
+		return response
+	}
+}
+
+extension Response {
+	var error: Error? {
+		get { storage[ErrorKey.self] }
+		set { storage[ErrorKey.self] = newValue }
+	}
+
+	struct ErrorKey: StorageKey {
+		typealias Value = Error
+	}
+}
+
+public extension Validation {
+	static func fail(for key: ValidationKey, message: String) throws -> Never {
+		var validations = Validations()
+		validations.add(key, as: String.self, is: !.empty, customFailureDescription: message)
+		try validations.validate(json: "{}").assert()
+
+		unreachable()
 	}
 }
 

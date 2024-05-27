@@ -19,7 +19,26 @@ public func configure(_ app: Application) async throws {
 	// setup authentication
 	app.sessions.use(.fluent)
 	app.middleware.use(app.sessions.middleware)
+	app.middleware.use(FlashMiddleware())
 	app.middleware.use(User.asyncSessionAuthenticator())
+
+	// The ErrorRenderer middleware must be placed after the flash and session middlewares,
+	// but before other middlewares that might need rendered errors.
+	app.middleware.use(ErrorRenderer())
+
+	// inertia data
+	app.inertia.share { request in
+		[
+			"auth": [
+				"user": request.auth.get(User.self),
+			],
+			"flash": [
+				"error": request.session.data["error"],
+				"success": request.session.data["success"],
+			],
+			"errors": request.session.data["errors", as: [String: [String]].self],
+		]
+	}
 
 	// register routes
 	try routes(app)
