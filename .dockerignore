@@ -6,3 +6,4 @@ Dockerfile
 public/build
 public/hot
 node_modules
+resources/db.sqlite

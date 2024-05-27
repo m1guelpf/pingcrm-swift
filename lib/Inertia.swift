@@ -33,9 +33,27 @@ public extension Application {
 		/// @see https://inertiajs.com/asset-versioning
 		public var version: @Sendable (Request) -> String? = { req in req.application.vite.version() }
 
+		var sharedProps: [@Sendable (Request) -> [String: Encodable & Sendable]] = []
+
 		public func setup() {
 			application.middleware.use(InertiaMiddleware(inertia: self))
 			application.leaf.tags["inertia"] = InertiaTag(inertia: self)
+		}
+
+		public mutating func share(_ values: @escaping @Sendable (Request) -> [String: Encodable]) {
+			sharedProps.append(values)
+		}
+
+		public mutating func share(_ key: String, _ value: @escaping @Sendable (Request) -> Encodable & Sendable) {
+			sharedProps.append { req in [key: value(req)] }
+		}
+
+		public mutating func share(_ key: String, _ value: Encodable & Sendable) {
+			sharedProps.append { _ in [key: value] }
+		}
+
+		fileprivate func sharedProps(for request: Request) -> [String: Encodable & Sendable] {
+			sharedProps.reduce(into: [:]) { $0.merge($1(request)) { _, new in new } }
 		}
 
 		struct InertiaTag: UnsafeUnescapedLeafTag {
@@ -146,8 +164,14 @@ public extension Request {
 			return request.redirect(to: location)
 		}
 
-		public func render<E>(page: String, _ data: E) async throws -> Response where E: Encodable {
-			let json = try Result { try JSONEncoder().encode(Data(component: page, props: data, url: request.url.string, version: version)) }
+		public func render(page: String, _ data: [String: Encodable & Sendable]) async throws -> Response {
+			let props = EncodableDictionary(
+				sharedProps
+					.merging(data) { _, new in new }
+					.merging(request.application.inertia.sharedProps(for: request)) { old, _ in old }
+			)
+
+			let json = try Result { try JSONEncoder().encode(Data(component: page, props: props, url: request.url.string, version: version)) }
 				.mapError { _ in Error.invalidData }
 				.get()
 
@@ -159,9 +183,9 @@ public extension Request {
 				.encodeResponse(for: request)
 		}
 
-		struct Data<E: Encodable>: Encodable {
+		struct Data: Encodable {
 			let component: String
-			let props: E
+			let props: EncodableDictionary
 			let url: String
 			let version: String?
 		}

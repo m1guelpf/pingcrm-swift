@@ -4,7 +4,7 @@ import NIOCore
 import NIOPosix
 
 @main
-enum Entrypoint {
+private class Entrypoint {
 	static func main() async throws {
 		var env = try Environment.detect()
 		try LoggingSystem.bootstrap(from: &env)
@@ -17,6 +17,7 @@ enum Entrypoint {
 		app.logger.debug("Running with \(executorTakeoverSuccess ? "SwiftNIO" : "standard") Swift Concurrency default executor")
 
 		do {
+			try await prepare(app)
 			try await configure(app)
 		} catch {
 			app.logger.report(error: error)
@@ -25,5 +26,15 @@ enum Entrypoint {
 		}
 		try await app.execute()
 		try await app.asyncShutdown()
+	}
+
+	static func prepare(_ app: Application) async throws {
+		// adjust directory structure
+		app.directory.reconfigure()
+
+		// setup error handling
+		app.middleware = .init()
+		app.middleware.use(RouteLoggingMiddleware(logLevel: .info))
+		app.middleware.use(ErrorMiddleware(in: app.environment))
 	}
 }

@@ -1,13 +1,5 @@
 import Vapor
 
-struct UserSessionAuthenticator: AsyncSessionAuthenticator {
-	typealias User = App.User
-	func authenticate(sessionID: String, for request: Request) async throws {
-		let user = User(id: UUID(uuidString: sessionID)!)
-		request.auth.login(user)
-	}
-}
-
 public extension Authenticatable {
 	static func requireAuth(
 		redirectsTo redirect: URI = URI(path: "/login")
@@ -37,7 +29,7 @@ private final class AuthMiddleware<A>: AsyncMiddleware where A: Authenticatable 
 
 	public func respond(to request: Request, chainingTo next: AsyncResponder) async throws -> Response {
 		guard request.auth.has(A.self) else {
-			return Response(status: .seeOther, headers: ["Location": redirect.description])
+			return request.redirect(to: redirect.string)
 		}
 
 		return try await next.respond(to: request)
@@ -59,7 +51,7 @@ private final class GuestMiddleware<A>: AsyncMiddleware where A: Authenticatable
 
 	public func respond(to request: Request, chainingTo next: AsyncResponder) async throws -> Response {
 		guard !request.auth.has(A.self) else {
-			return Response(status: .seeOther, headers: ["Location": redirect.description])
+			return request.redirect(to: redirect.string)
 		}
 
 		return try await next.respond(to: request)
