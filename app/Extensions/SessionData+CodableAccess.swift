@@ -1,15 +1,12 @@
 import Vapor
 
-private let decoder = JSONDecoder()
-private let encoder = JSONEncoder()
-
 public extension SessionData {
 	func get<T: Decodable>(_ key: String, as _: T.Type) throws -> T? {
 		guard let value = self[key]?.data(using: .utf8) else {
 			return nil
 		}
 
-		return try decoder.decode(T.self, from: value)
+		return try JSONDecoder().decode(T.self, from: value)
 	}
 
 	func get<T: Decodable>(_ key: String) throws -> T? {
@@ -22,7 +19,7 @@ public extension SessionData {
 			return
 		}
 
-		self[key] = try String(data: encoder.encode(value), encoding: .utf8)!
+		self[key] = try String(data: JSONEncoder().encode(value), encoding: .utf8)!
 	}
 
 	subscript<T: Decodable>(_ key: String, as _: T.Type) -> T? {
