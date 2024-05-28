@@ -84,7 +84,7 @@ public extension Application {
 					return request.inertia.redirect(to: request.url)
 				}
 
-				if response.status.isOk && response.body.isEmpty {
+				if response.status.isSuccess && response.body.isEmpty {
 					return request.redirect(to: request.url.string)
 				}
 
