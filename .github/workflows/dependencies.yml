@@ -1,0 +1,22 @@
+name: Swift Dependency Submission
+on:
+    push:
+        branches:
+            - main
+
+permissions:
+    contents: write
+
+jobs:
+    swift-action-detection:
+        runs-on: ubuntu-latest
+        steps:
+            - name: 'Checkout Repository'
+              uses: actions/checkout@v4
+
+            - uses: vapor/swiftly-action@v0.1
+              with:
+                  toolchain: 5.10
+
+            - name: Run snapshot action
+              uses: actions/swift-dependency-submission@v0.1

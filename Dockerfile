@@ -10,7 +10,7 @@ RUN swift package resolve \
 
 COPY . .
 
-RUN swift build -c release -Xswiftc -g -static-executable
+RUN swift build -c release -Xswiftc -g -Xswiftc -static-executable
 
 WORKDIR /staging
 
