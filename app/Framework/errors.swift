@@ -20,6 +20,15 @@ struct ErrorRenderer: AsyncMiddleware {
 }
 
 struct ErrorMiddleware: AsyncMiddleware {
+	/// Structure of `ErrorMiddleware` default response.
+	struct ErrorResponse: Codable {
+		/// Always `true` to indicate this is a non-typical JSON response.
+		var error: Bool
+
+		/// The reason for the error.
+		var reason: String
+	}
+
 	let environment: Environment
 
 	init(in environment: Environment) {
@@ -50,7 +59,27 @@ struct ErrorMiddleware: AsyncMiddleware {
 		// Report the error
 		request.logger.report(error: error, file: source.file, function: source.function, line: source.line)
 
-		return Response(status: status, headers: headers, body: .init(string: reason))
+		var response: Response? = nil
+		if request.isInertia || request.headers.accept.contains(where: { $0.mediaType == .html }) {
+			response = try? await request.inertia.render(page: "Error", ["status": status.code, "reason": reason])
+		}
+
+		return response.orElse {
+			let body: Response.Body
+			do {
+				body = try .init(
+					buffer: JSONEncoder().encodeAsByteBuffer(ErrorResponse(error: true, reason: reason), allocator: request.byteBufferAllocator),
+					byteBufferAllocator: request.byteBufferAllocator
+				)
+				headers.contentType = .json
+			} catch {
+				request.logger.report(error: error)
+				body = .init(string: "Oops: \(String(describing: error))\nWhile encoding error: \(reason)", byteBufferAllocator: request.byteBufferAllocator)
+				headers.contentType = .plainText
+			}
+
+			return Response(status: status, headers: headers, body: body)
+		}
 	}
 
 	func respond(to request: Request, chainingTo next: any AsyncResponder) async throws -> Response {
