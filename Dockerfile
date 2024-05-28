@@ -1,7 +1,7 @@
 # ================================
 # Swift build image
 # ================================
-FROM swift:5.10-jammy as build
+FROM --platform=amd64 swift:5.10-jammy as build
 WORKDIR /build
 
 COPY ./Package.* ./
@@ -39,7 +39,7 @@ RUN NODE_ENV=production bun run build
 # ================================
 # Run image
 # ================================
-FROM gcr.io/distroless/cc-debian10
+FROM --platform=amd64 gcr.io/distroless/cc-debian10
 WORKDIR /app
 
 COPY --from=build-js --chown=vapor:vapor /build/public/build /app/public/build
