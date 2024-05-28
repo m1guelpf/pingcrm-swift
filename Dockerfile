@@ -45,7 +45,7 @@ WORKDIR /app
 COPY --from=build-js --chown=vapor:vapor /build/public/build /app/public/build
 COPY --from=build --chown=vapor:vapor /staging /app
 
-ENV SWIFT_BACKTRACE=enable=yes,sanitize=yes,threads=all,images=all,interactive=no,dwarf=yes,demangle=yes,swift-backtrace=./swift-backtrace-static
+ENV SWIFT_BACKTRACE=enable=yes,sanitize=yes,threads=all,images=all,interactive=no,demangle=yes,swift-backtrace=./swift-backtrace-static
 
 ENTRYPOINT ["./App"]
 CMD ["serve", "--env", "production", "--hostname", "0.0.0.0", "--port", "8080"]
