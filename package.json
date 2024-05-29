@@ -31,7 +31,7 @@
 		"eslint-plugin-react-compiler": "latest",
 		"eslint-plugin-react-hooks": "^4.6.2",
 		"eslint-plugin-react-refresh": "^0.4.7",
-		"laravel-vite-plugin": "^1.0",
+		"vapor-vite-plugin": "^0.0.1",
 		"postcss": "^8.4.38",
 		"prettier": "^3.2.5",
 		"prettier-plugin-sort-imports-desc": "^1.0.0",
