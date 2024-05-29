@@ -1,5 +1,5 @@
 {
-  "originHash" : "b22e01cb9027e8ac3d4597e49a4cafe4e82111498099478506aa33435da78509",
+  "originHash" : "90fbf2eefc8bf4b62359f193a2c5836ad14558ddd56b68da14a5cf60d963751f",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "9c24ac496c97cfb49c1bd5e7162008bb50abafc8",
         "version" : "4.14.2"
+      }
+    },
+    {
+      "identity" : "fakery",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vadymmarkov/Fakery",
+      "state" : {
+        "revision" : "71cb3bf36a808534659d1248780c2bf3c4c4fc91",
+        "version" : "5.1.0"
       }
     },
     {

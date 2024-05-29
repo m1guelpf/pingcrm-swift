@@ -36,5 +36,8 @@ private class Entrypoint {
 		app.middleware = .init()
 		app.middleware.use(RouteLoggingMiddleware(logLevel: .info))
 		app.middleware.use(ErrorMiddleware(in: app.environment))
+
+		// register seeding command
+		app.asyncCommands.use(SeedCommand(), as: "seed")
 	}
 }

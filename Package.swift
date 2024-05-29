@@ -13,6 +13,7 @@ let package = Package(
 		.package(url: "https://github.com/vapor/leaf.git", from: "4.3.0"),
 		.package(url: "https://github.com/vapor/vapor.git", from: "4.101.0"),
 		.package(url: "https://github.com/vapor/fluent.git", from: "4.10.0"),
+		.package(url: "https://github.com/vadymmarkov/Fakery", from: "5.1.0"),
 		.package(url: "https://github.com/apple/swift-nio.git", from: "2.65.0"),
 		.package(url: "https://github.com/m1guelpf/ziggy-vapor.git", from: "1.0.2"),
 		.package(url: "https://github.com/apple/swift-crypto.git", "1.0.0"..<"3.0.0"),
@@ -24,10 +25,7 @@ let package = Package(
 			dependencies: [
 				.product(name: "Leaf", package: "leaf"),
 				.product(name: "Vapor", package: "vapor"),
-				.product(name: "Fluent", package: "fluent"),
-				.product(name: "Ziggy", package: "ziggy-vapor"),
 				.product(name: "Crypto", package: "swift-crypto"),
-				.product(name: "FluentPostgresDriver", package: "fluent-postgres-driver"),
 			],
 			path: "./lib",
 			swiftSettings: swiftSettings
@@ -38,8 +36,12 @@ let package = Package(
 				"Inertia",
 				.product(name: "Leaf", package: "leaf"),
 				.product(name: "Vapor", package: "vapor"),
+				.product(name: "Fluent", package: "fluent"),
+				.product(name: "Fakery", package: "Fakery"),
+				.product(name: "Ziggy", package: "ziggy-vapor"),
 				.product(name: "NIOCore", package: "swift-nio"),
 				.product(name: "NIOPosix", package: "swift-nio"),
+				.product(name: "FluentPostgresDriver", package: "fluent-postgres-driver"),
 			],
 			path: "./app",
 			swiftSettings: swiftSettings

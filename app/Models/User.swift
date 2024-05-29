@@ -49,6 +49,17 @@ final class User: Model, Content, @unchecked Sendable {
 		self.photo = photo
 		$account.id = accountID
 	}
+
+	init(id: UUID? = nil, firstName: String, lastName: String, email: String, plainTextPassword: String, owner: Bool = false, photo: String? = nil, accountID: UUID) throws {
+		self.id = id
+		self.lastName = lastName
+		self.firstName = firstName
+		self.email = email
+		password = try Bcrypt.hash(plainTextPassword)
+		self.owner = owner
+		self.photo = photo
+		$account.id = accountID
+	}
 }
 
 extension User: ModelAuthenticatable, ModelSessionAuthenticatable {
@@ -67,5 +78,18 @@ extension User: ModelAuthenticatable, ModelSessionAuthenticatable {
 
 	func verify(password: String) throws -> Bool {
 		try Bcrypt.verify(password, created: self.password)
+	}
+}
+
+extension User: ModelFactory {
+	convenience init(faker: Faker) throws {
+		self.init()
+
+		owner = false
+		photo = faker.internet.image()
+		lastName = faker.name.lastName()
+		firstName = faker.name.firstName()
+		email = faker.internet.safeEmail()
+		password = try Bcrypt.hash(faker.internet.password())
 	}
 }
