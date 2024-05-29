@@ -3,7 +3,7 @@ import Vapor
 import Ziggy
 import Fluent
 import Inertia
-import FluentSQLiteDriver
+import FluentPostgresDriver
 
 // configures your application
 public func configure(_ app: Application) async throws {
@@ -13,8 +13,12 @@ public func configure(_ app: Application) async throws {
 	app.inertia.setup()
 
 	// setup database
-	app.databases.use(.sqlite(.file(app.directory.resourcesDirectory + "db.sqlite")), as: .sqlite)
-	app.migrations.add(migrations)
+	if let url = Environment.get("DATABASE_URL") {
+		try app.databases.use(.postgres(url: url), as: .psql)
+		app.migrations.add(migrations)
+	} else {
+		fatalError("DATABASE_URL is not set.")
+	}
 
 	// setup authentication
 	app.sessions.use(.fluent)
@@ -36,7 +40,7 @@ public func configure(_ app: Application) async throws {
 				"error": request.session.data["error"],
 				"success": request.session.data["success"],
 			],
-			"errors": request.session.data["errors", as: [String: [String]].self],
+			"errors": request.session.data["errors", as: [String: [String]].self] ?? [:],
 		]
 	}
 
