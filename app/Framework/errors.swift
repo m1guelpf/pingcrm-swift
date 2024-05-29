@@ -61,7 +61,7 @@ struct ErrorMiddleware: AsyncMiddleware {
 
 		var response: Response? = nil
 		if request.isInertia || request.headers.accept.contains(where: { $0.mediaType == .html }) {
-			response = try? await request.inertia.render(page: "Error", ["status": status.code, "reason": reason])
+			response = try? await request.inertia.render(page: "Error", ["status": status.code, "reason": reason], status: status)
 		}
 
 		return response.orElse {

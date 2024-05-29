@@ -148,10 +148,6 @@ public extension Request {
 			return self
 		}
 
-		public func render(page: String) async throws -> Response {
-			try await render(page: page, [:] as [String: String])
-		}
-
 		public func redirect(to location: URI) -> Response {
 			redirect(to: location.string)
 		}
@@ -164,7 +160,7 @@ public extension Request {
 			return request.redirect(to: location)
 		}
 
-		public func render(page: String, _ data: [String: Encodable & Sendable]) async throws -> Response {
+		public func render(page: String, _ data: [String: Encodable & Sendable] = [:], status: HTTPResponseStatus = .ok) async throws -> Response {
 			let props = EncodableDictionary(
 				sharedProps
 					.merging(data) { _, new in new }
@@ -176,11 +172,12 @@ public extension Request {
 				.get()
 
 			if request.isInertia {
-				return Response(status: .ok, headers: [Headers.INERTIA: "true", "Content-Type": "application/json"], body: .init(data: json))
+				return Response(status: status, headers: [Headers.INERTIA: "true", "Content-Type": "application/json"], body: .init(data: json))
 			}
 
 			return try await request.view.render(inertia.rootView, ["_intertiaJson": String(data: json, encoding: .utf8)?.replacingOccurrences(of: "\"", with: "&quot;")])
-				.encodeResponse(for: request)
+				.encodeResponse(for: request).get()
+				.withStatus(status)
 		}
 
 		struct Data: Encodable {

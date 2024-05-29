@@ -6,6 +6,13 @@ extension HTTPResponseStatus {
 	}
 }
 
+extension Response {
+	func withStatus(_ status: HTTPResponseStatus) -> Response {
+		self.status = status
+		return self
+	}
+}
+
 extension Response.Body {
 	var isEmpty: Bool {
 		count == 0

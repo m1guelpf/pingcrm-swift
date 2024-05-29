@@ -7,7 +7,7 @@ func routes(_ app: Application) throws {
 	}
 
 	app.group(User.requireAuth()) { authRoutes in
-		authRoutes.post("logout", use: LoginController.destroy).name("logout")
+		authRoutes.delete("logout", use: LoginController.destroy).name("logout")
 
 		// Dashboard
 		authRoutes.get(use: DashboardController.index).name("dashboard")
