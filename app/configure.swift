@@ -2,7 +2,8 @@ import Leaf
 import Vapor
 import Ziggy
 import Fluent
-import Inertia
+import FlashKit
+import InertiaKit
 import FluentPostgresDriver
 
 // configures your application

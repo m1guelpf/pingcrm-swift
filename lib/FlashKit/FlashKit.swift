@@ -1,6 +1,6 @@
 import Vapor
 
-extension Request {
+public extension Request {
 	var flash: FlashStorage {
 		get {
 			if let existing = storage[FlashKey.self] {
@@ -16,15 +16,15 @@ extension Request {
 		}
 	}
 
-	struct FlashStorage {
-		static let flashSessionKey = "_flash"
+	struct FlashStorage: Sendable {
+		private static let flashSessionKey = "_flash"
 
-		let req: Request
+		private let req: Request
 
-		var oldKeys: [String] = []
-		var newKeys: [String] = []
+		private var oldKeys: [String] = []
+		private var newKeys: [String] = []
 
-		init(request req: Request) {
+		fileprivate init(request req: Request) {
 			self.req = req
 
 			if let oldKeysFromSession = try? req.session.data.get(Self.flashSessionKey, as: [String].self) {
@@ -77,13 +77,15 @@ extension Request {
 		}
 	}
 
-	struct FlashKey: StorageKey {
+	private struct FlashKey: StorageKey {
 		public typealias Value = FlashStorage
 	}
 }
 
-struct FlashMiddleware: AsyncMiddleware {
-	func respond(to request: Request, chainingTo next: AsyncResponder) async throws -> Response {
+public struct FlashMiddleware: AsyncMiddleware {
+	public init() {}
+
+	public func respond(to request: Request, chainingTo next: AsyncResponder) async throws -> Response {
 		if request.hasSession {
 			request.flash = .init(request: request)
 		}

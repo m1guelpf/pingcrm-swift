@@ -7,7 +7,8 @@ let package = Package(
 		.macOS(.v13),
 	],
 	products: [
-		.library(name: "Inertia", targets: ["Inertia"]),
+		.library(name: "FlashKit", targets: ["FlashKit"]),
+		.library(name: "InertiaKit", targets: ["InertiaKit"]),
 	],
 	dependencies: [
 		.package(url: "https://github.com/vapor/leaf.git", from: "4.3.0"),
@@ -21,19 +22,28 @@ let package = Package(
 	],
 	targets: [
 		.target(
-			name: "Inertia",
+			name: "InertiaKit",
 			dependencies: [
 				.product(name: "Leaf", package: "leaf"),
 				.product(name: "Vapor", package: "vapor"),
 				.product(name: "Crypto", package: "swift-crypto"),
 			],
-			path: "./lib",
+			path: "./lib/InertiaKit",
+			swiftSettings: swiftSettings
+		),
+		.target(
+			name: "FlashKit",
+			dependencies: [
+				.product(name: "Vapor", package: "vapor"),
+			],
+			path: "./lib/FlashKit",
 			swiftSettings: swiftSettings
 		),
 		.executableTarget(
 			name: "App",
 			dependencies: [
-				"Inertia",
+				"InertiaKit",
+				"FlashKit",
 				.product(name: "Leaf", package: "leaf"),
 				.product(name: "Vapor", package: "vapor"),
 				.product(name: "Fluent", package: "fluent"),

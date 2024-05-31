@@ -79,7 +79,7 @@ public extension Application {
 				}
 
 				if request.method == .GET && request.headers.first(name: Headers.VERSION) != inertia.version(request) {
-					// @TODO: reflash session
+					// @TODO: figure out how to reflash session without requiring Flash dependency
 
 					return request.inertia.redirect(to: request.url)
 				}
