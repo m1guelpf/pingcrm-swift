@@ -8,6 +8,7 @@ let package = Package(
 	],
 	products: [
 		.library(name: "FlashKit", targets: ["FlashKit"]),
+		.library(name: "PolicyKit", targets: ["PolicyKit"]),
 		.library(name: "InertiaKit", targets: ["InertiaKit"]),
 	],
 	dependencies: [
@@ -39,11 +40,21 @@ let package = Package(
 			path: "./lib/FlashKit",
 			swiftSettings: swiftSettings
 		),
+		.target(
+			name: "PolicyKit",
+			dependencies: [
+				.product(name: "Vapor", package: "vapor"),
+				.product(name: "Fluent", package: "fluent"),
+			],
+			path: "./lib/PolicyKit",
+			swiftSettings: swiftSettings
+		),
 		.executableTarget(
 			name: "App",
 			dependencies: [
-				"InertiaKit",
 				"FlashKit",
+				"PolicyKit",
+				"InertiaKit",
 				.product(name: "Leaf", package: "leaf"),
 				.product(name: "Vapor", package: "vapor"),
 				.product(name: "Fluent", package: "fluent"),

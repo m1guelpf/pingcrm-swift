@@ -1,5 +1,6 @@
 import Vapor
 import Fluent
+import PolicyKit
 
 final class User: Model, Content, @unchecked Sendable {
 	static let schema = "users"
@@ -62,7 +63,7 @@ final class User: Model, Content, @unchecked Sendable {
 	}
 }
 
-extension User: ModelAuthenticatable, ModelSessionAuthenticatable {
+extension User: Authorizable, ModelAuthenticatable, ModelSessionAuthenticatable {
 	public struct ModelCredentials: Content, Sendable, Validatable {
 		public let email: String
 		public let password: String
@@ -78,6 +79,19 @@ extension User: ModelAuthenticatable, ModelSessionAuthenticatable {
 
 	func verify(password: String) throws -> Bool {
 		try Bcrypt.verify(password, created: self.password)
+	}
+}
+
+extension User: ModelPolicy {
+	enum Action {
+		case view
+		case update
+		case delete
+		case restore
+	}
+
+	func can(authenticated user: User, do _: Action) -> Bool {
+		return user.$account.id == account.id
 	}
 }
 

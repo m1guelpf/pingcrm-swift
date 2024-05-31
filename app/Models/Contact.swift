@@ -1,5 +1,6 @@
 import Vapor
 import Fluent
+import PolicyKit
 
 final class Contact: Model, Content, @unchecked Sendable {
 	static let schema = "contacts"
@@ -62,6 +63,19 @@ final class Contact: Model, Content, @unchecked Sendable {
 		self.lastName = lastName
 		self.firstName = firstName
 		self.postalCode = postalCode
+	}
+}
+
+extension Contact: ModelPolicy {
+	enum Action {
+		case view
+		case update
+		case delete
+		case restore
+	}
+
+	func can(authenticated user: User, do _: Action) -> Bool {
+		return user.$account.id == account.id
 	}
 }
 

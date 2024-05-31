@@ -1,5 +1,6 @@
 import Vapor
 import Fluent
+import PolicyKit
 
 final class Organization: Model, Content, @unchecked Sendable {
 	static let schema = "organizations"
@@ -59,6 +60,19 @@ final class Organization: Model, Content, @unchecked Sendable {
 		self.country = country
 		$account.id = accountID
 		self.postalCode = postalCode
+	}
+}
+
+extension Organization: ModelPolicy {
+	enum Action {
+		case view
+		case update
+		case delete
+		case restore
+	}
+
+	func can(authenticated user: User, do _: Action) -> Bool {
+		return user.$account.id == account.id
 	}
 }
 

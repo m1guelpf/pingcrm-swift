@@ -1,4 +1,5 @@
 import Vapor
+import Fluent
 
 public extension Request {
 	enum RedirectBack {
@@ -61,5 +62,15 @@ public extension Result where Failure == Infallible {
 			case let .success(value):
 				return value
 		}
+	}
+}
+
+public extension QueryBuilder {
+	func firstOrFail(error: Error = Abort(.notFound)) async throws -> Model {
+		guard let model = try await first() else {
+			throw error
+		}
+
+		return model
 	}
 }
