@@ -17,7 +17,7 @@ final class User: Model, @unchecked Sendable {
 	@Field(key: "email")
 	var email: String
 
-	@Field(key: "password")
+	@PrivateField(key: "password")
 	var password: String
 
 	@Field(key: "owner")
