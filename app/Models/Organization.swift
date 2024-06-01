@@ -72,7 +72,7 @@ extension Organization: ModelPolicy {
 	}
 
 	func can(authenticated user: User, do _: Action) -> Bool {
-		return user.$account.id == account.id
+		return user.$account.id == $account.id
 	}
 }
 

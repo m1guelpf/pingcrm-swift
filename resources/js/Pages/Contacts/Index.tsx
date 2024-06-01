@@ -14,10 +14,7 @@ type Props = {
 }
 
 const ContactsPage: Page<Props> = ({ contacts }) => {
-	const {
-		data,
-		meta: { links },
-	} = contacts
+	const { items, metadata } = contacts
 
 	return (
 		<div>
@@ -30,7 +27,7 @@ const ContactsPage: Page<Props> = ({ contacts }) => {
 				</Link>
 			</div>
 			<Table
-				rows={data}
+				rows={items}
 				getRowDetailsUrl={row => route('contacts.edit', row.id)}
 				columns={[
 					{
@@ -48,7 +45,7 @@ const ContactsPage: Page<Props> = ({ contacts }) => {
 					{ label: 'Phone', name: 'phone', colSpan: 2 },
 				]}
 			/>
-			<Pagination links={links} />
+			<Pagination meta={metadata} />
 		</div>
 	)
 }

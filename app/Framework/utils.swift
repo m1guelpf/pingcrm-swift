@@ -1,5 +1,6 @@
 import Vapor
 import Fluent
+import Fakery
 
 public extension Request {
 	enum RedirectBack {
@@ -74,3 +75,26 @@ public extension QueryBuilder {
 		return model
 	}
 }
+
+public extension Model where IDValue == UUID {
+	static func find(from request: Request) async throws -> Self {
+		guard let id = request.parameters.get("id") else {
+			throw Abort(.badRequest)
+		}
+
+		guard let uuid = UUID(uuidString: id) else {
+			throw Abort(.badRequest)
+		}
+
+		return try await Self.find(uuid, on: request.db).unwrap(or: Abort(.notFound))
+	}
+}
+
+public extension Faker.Internet {
+	func image(width: Int = 320, height: Int = 200) -> String {
+		return "https://picsum.photos/\(width)/\(height)?random=\(UUID().uuidString)"
+	}
+}
+
+extension Fluent.PageMetadata: @unchecked Sendable {}
+extension Fluent.Page: @unchecked Sendable where T: Sendable {}

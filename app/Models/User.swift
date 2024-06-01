@@ -2,7 +2,7 @@ import Vapor
 import Fluent
 import PolicyKit
 
-final class User: Model, Content, @unchecked Sendable {
+final class User: Model, @unchecked Sendable {
 	static let schema = "users"
 
 	@ID(key: .id)
@@ -74,8 +74,9 @@ extension User: Authorizable, ModelAuthenticatable, ModelSessionAuthenticatable 
 		}
 	}
 
+	// `passwordHashKey` is not used anywhere, but is required to be a string, so we cheat and re-use the email key.
+	static let passwordHashKey = \User.$email
 	static let usernameKey = \User.$email
-	static let passwordHashKey = \User.$password
 
 	func verify(password: String) throws -> Bool {
 		try Bcrypt.verify(password, created: self.password)
@@ -91,7 +92,7 @@ extension User: ModelPolicy {
 	}
 
 	func can(authenticated user: User, do _: Action) -> Bool {
-		return user.$account.id == account.id
+		return user.$account.id == $account.id
 	}
 }
 

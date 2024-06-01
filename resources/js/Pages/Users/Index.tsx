@@ -13,12 +13,7 @@ type Props = {
 	users: PaginatedData<User>
 }
 
-const UsersPage: Page<Props> = ({
-	users: {
-		data,
-		meta: { links },
-	},
-}) => (
+const UsersPage: Page<Props> = ({ users: { items, metadata } }) => (
 	<div>
 		<h1 className="mb-8 text-3xl font-bold">Users</h1>
 		<div className="flex items-center justify-between mb-6">
@@ -36,19 +31,27 @@ const UsersPage: Page<Props> = ({
 
 					renderCell: row => (
 						<>
-							{row.photo && <img src={row.photo} alt={row.name} className="w-5 h-5 mr-2 rounded-full" />}
-							<>{row.name}</>
-							{row.deleted_at && <Trash2 size={16} className="ml-2 text-gray-400" />}
+							{row.photo && (
+								<img
+									src={row.photo}
+									alt={`${row.firstName} ${row.lastName}`}
+									className="w-5 h-5 mr-2 rounded-full"
+								/>
+							)}
+							<>
+								{row.firstName} {row.lastName}
+							</>
+							{row.deletedAt && <Trash2 size={16} className="ml-2 text-gray-400" />}
 						</>
 					),
 				},
 				{ label: 'Email', name: 'email' },
 				{ label: 'Role', name: 'owner', colSpan: 2, renderCell: row => (row.owner ? 'Owner' : 'User') },
 			]}
-			rows={data}
+			rows={items}
 			getRowDetailsUrl={row => route('users.edit', row.id)}
 		/>
-		<Pagination links={links} />
+		<Pagination meta={metadata} />
 	</div>
 )
 

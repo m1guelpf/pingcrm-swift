@@ -1,5 +1,5 @@
 {
-  "originHash" : "90fbf2eefc8bf4b62359f193a2c5836ad14558ddd56b68da14a5cf60d963751f",
+  "originHash" : "90f633522795a02c920b65ed5494b8d300cb9bdff9898888361842b8634e2677",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/fluent.git",
       "state" : {
-        "revision" : "d831ac5e6a514dd8aa8d5499bb04be3983be1112",
-        "version" : "4.10.0"
+        "revision" : "dfcbeba27a576c20ff181d496f21ecd45d2c1a71",
+        "version" : "4.11.0"
       }
     },
     {
@@ -276,8 +276,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/vapor.git",
       "state" : {
-        "revision" : "cc98361cbec22757a89a9717836293f215a0f67d",
-        "version" : "4.101.0"
+        "revision" : "12e9b41cc576165150cb236676fc94d997d3db5f",
+        "version" : "4.101.1"
       }
     },
     {

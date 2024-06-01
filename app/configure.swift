@@ -38,8 +38,8 @@ public func configure(_ app: Application) async throws {
 				"user": request.auth.get(User.self),
 			],
 			"flash": [
-				"error": request.session.data["error"],
-				"success": request.session.data["success"],
+				"error": request.session.data["error", as: String?.self],
+				"success": request.session.data["success", as: String?.self],
 			],
 			"errors": request.session.data["errors", as: [String: [String]].self] ?? [:],
 		]

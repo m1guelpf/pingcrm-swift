@@ -12,7 +12,7 @@ import DeleteButton from '@/Components/Button/DeleteButton'
 import LoadingButton from '@/Components/Button/LoadingButton'
 import TrashedMessage from '@/Components/Messages/TrashedMessage'
 
-type EditedUser = Omit<User, 'id' | 'photo' | 'account' | 'name' | 'deleted_at'> & {
+type EditedUser = Omit<User, 'id' | 'photo' | 'account' | 'deletedAt' | 'createdAt'> & {
 	password: string
 	photo: File | null
 }
@@ -25,11 +25,11 @@ const EditUserPage: Page<Props> = ({ user }) => {
 	//@TODO: Make sure file uploads work
 	const { data, setData, errors, put, processing } = useForm<EditedUser>({
 		photo: null,
+		owner: user.owner,
 		email: user.email || '',
 		password: user.password || '',
-		last_name: user.last_name || '',
-		first_name: user.first_name || '',
-		owner: user.owner ? '1' : '0' || '0',
+		lastName: user.lastName || '',
+		firstName: user.firstName || '',
 	})
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -52,34 +52,34 @@ const EditUserPage: Page<Props> = ({ user }) => {
 
 	return (
 		<div>
-			<Head title={`${data.first_name} ${data.last_name}`} />
+			<Head title={`${data.firstName} ${data.lastName}`} />
 			<div className="flex justify-start max-w-lg mb-8">
 				<h1 className="text-3xl font-bold">
 					<Link href={route('users')} className="text-indigo-600 hover:text-indigo-700">
 						Users
 					</Link>
 					<span className="mx-2 font-medium text-indigo-600">/</span>
-					{data.first_name} {data.last_name}
+					{data.firstName} {data.lastName}
 				</h1>
 				{user.photo && <img className="block w-8 h-8 ml-4 rounded-full" src={user.photo} />}
 			</div>
-			{user.deleted_at && <TrashedMessage onRestore={restore}>This user has been deleted.</TrashedMessage>}
+			{user.deletedAt && <TrashedMessage onRestore={restore}>This user has been deleted.</TrashedMessage>}
 			<div className="max-w-3xl overflow-hidden bg-white rounded shadow">
 				<form onSubmit={handleSubmit}>
 					<div className="grid gap-8 p-8 lg:grid-cols-2">
 						<TextInput
-							name="first_name"
+							name="firstName"
 							label="First Name"
-							value={data.first_name}
-							error={errors.first_name}
-							onChange={e => setData('first_name', e.target.value)}
+							value={data.firstName}
+							error={errors.firstName}
+							onChange={e => setData('firstName', e.target.value)}
 						/>
 						<TextInput
-							name="last_name"
+							name="lastName"
 							label="Last Name"
-							value={data.last_name}
-							error={errors.last_name}
-							onChange={e => setData('last_name', e.target.value)}
+							value={data.lastName}
+							error={errors.lastName}
+							onChange={e => setData('lastName', e.target.value)}
 						/>
 						<TextInput
 							name="email"
@@ -100,12 +100,12 @@ const EditUserPage: Page<Props> = ({ user }) => {
 						<SelectInput
 							name="owner"
 							label="Owner"
-							value={data.owner}
 							error={errors.owner}
-							onChange={e => setData('owner', e.target.value)}
+							value={data.owner ? 'true' : 'false'}
+							onChange={e => setData('owner', e.target.value == 'true')}
 							options={[
-								{ value: '1', label: 'Yes' },
-								{ value: '0', label: 'No' },
+								{ value: 'true', label: 'Yes' },
+								{ value: 'false', label: 'No' },
 							]}
 						/>
 						<FileInput
@@ -118,7 +118,7 @@ const EditUserPage: Page<Props> = ({ user }) => {
 						/>
 					</div>
 					<div className="flex items-center px-8 py-4 bg-gray-100 border-t border-gray-200">
-						{!user.deleted_at && <DeleteButton onDelete={destroy}>Delete User</DeleteButton>}
+						{!user.deletedAt && <DeleteButton onDelete={destroy}>Delete User</DeleteButton>}
 						<LoadingButton loading={processing} type="submit" className="ml-auto btn-indigo">
 							Update User
 						</LoadingButton>

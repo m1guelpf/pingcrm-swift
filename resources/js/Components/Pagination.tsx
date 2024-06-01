@@ -1,25 +1,28 @@
 import clsx from 'clsx'
 import { FC } from 'react'
 import { Link } from '@inertiajs/react'
+import { PaginatedData } from '@/Types/app'
 
 type Props = {
-	links: PaginationItem[]
+	meta: PaginatedData<unknown>['metadata']
 }
 
-const Pagination: FC<Props> = ({ links = [] }) => {
-	// If there are only 3 links, it means there are no previous or next pages.
-	// So, we don't need to render the pagination.
-	if (links.length === 3) return null
+const Pagination: FC<Props> = ({ meta }) => {
+	if (meta.total <= meta.per) return null
+	const links = Array.from({ length: Math.ceil(meta.total / meta.per) }, (_, i) => {
+		const page = i + 1
+		return {
+			label: page.toString(),
+			active: page === meta.page,
+			url: page === meta.page ? null : `?page=${page}`,
+		}
+	})
 
 	return (
 		<div className="flex flex-wrap mt-6 -mb-1">
-			{links?.map(link => {
-				return link?.url === null ? (
-					<PageInactive key={link.label} label={link.label} />
-				) : (
-					<PaginationItem key={link.label} {...link} />
-				)
-			})}
+			{links.map(link => (
+				<PaginationItem key={link.label} {...link} />
+			))}
 		</div>
 	)
 }
@@ -39,17 +42,9 @@ const PaginationItem: FC<PaginationItem> = ({ active, label, url }) => {
 				'text-sm mr-1 mb-1 px-4 py-3 hover:bg-white border border-solid border-gray-300 rounded focus:outline-none focus:border-indigo-700 focus:text-indigo-700'
 			)}
 		>
-			{/* `label` comes from the API and will either be `&laquo; Previous` or `Next &raquo;` */}
-			<span dangerouslySetInnerHTML={{ __html: label }}></span>
+			<span>{label}</span>
 		</Link>
 	)
 }
-
-const PageInactive: FC<{ label: string }> = ({ label }) => (
-	<div
-		dangerouslySetInnerHTML={{ __html: label }}
-		className="mr-1 mb-1 px-4 py-3 text-sm border rounded border-solid border-gray-300 text-gray"
-	/>
-)
 
 export default Pagination

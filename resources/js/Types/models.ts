@@ -1,13 +1,13 @@
 export type User = {
-	id: number
-	name: string
-	first_name: string
-	last_name: string
+	id: string
+	lastName: string
+	firstName: string
 	email: string
-	owner: string
-	photo: string
-	deleted_at: string
-	account: Account
+	owner: boolean
+	photo: string | null
+	createdAt: number
+	deletedAt: number | null
+	account: { id: number }
 }
 
 export type Account = {

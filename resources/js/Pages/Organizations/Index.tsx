@@ -13,12 +13,7 @@ type Props = {
 	organizations: PaginatedData<Organization>
 }
 
-const OrganizationsPage: Page<Props> = ({
-	organizations: {
-		data,
-		meta: { links },
-	},
-}) => {
+const OrganizationsPage: Page<Props> = ({ organizations: { items, metadata } }) => {
 	return (
 		<div>
 			<h1 className="mb-8 text-3xl font-bold">Organizations</h1>
@@ -44,10 +39,10 @@ const OrganizationsPage: Page<Props> = ({
 					{ label: 'City', name: 'city' },
 					{ label: 'Phone', name: 'phone', colSpan: 2 },
 				]}
-				rows={data}
+				rows={items}
 				getRowDetailsUrl={row => route('organizations.edit', row.id)}
 			/>
-			<Pagination links={links} />
+			<Pagination meta={metadata} />
 		</div>
 	)
 }

@@ -8,17 +8,21 @@ struct Filters: Content {
 	}
 
 	let role: String?
-	let search: String
+	let search: String?
 	let thrashed: Thrashed?
 }
 
 enum UsersController {
 	@Sendable static func index(req: Request) async throws -> Response {
+		let user = try req.auth.require(User.self)
 		let filters = try req.query.decode(Filters.self)
-		let emptyArrayPlaceholder: [String] = []
+
+		let users = try await User.query(on: req.db)
+			.filter(\.$account.$id == user.$account.id)
+			.paginate(for: req)
 
 		return try await req.inertia.render(page: "Users/Index", [
-			"users": emptyArrayPlaceholder, // paginated and filtered users
+			"users": users,
 			"filters": filters,
 		])
 	}
@@ -34,9 +38,7 @@ enum UsersController {
 	}
 
 	@Sendable static func edit(req: Request) async throws -> Response {
-		let userId = UUID(uuidString: req.parameters.get("id")!)
-		let user = try await User.find(userId, on: req.db).unwrap(or: Abort(.notFound))
-
+		let user = try await User.find(from: req)
 		try req.auth.require(User.self).authorize(.update, for: user)
 
 		return try await req.inertia.render(page: "Users/Edit", [
@@ -45,18 +47,15 @@ enum UsersController {
 	}
 
 	@Sendable static func update(req: Request) async throws -> Response {
-		let userId = UUID(uuidString: req.parameters.get("id")!)
-		let user = try await User.find(userId, on: req.db).unwrap(or: Abort(.notFound))
-
+		let user = try await User.find(from: req)
 		try req.auth.require(User.self).authorize(.update, for: user)
 
+		try await user.update(with: req.content.decode(UserUpdateRequest.self), on: req.db)
 		return try req.flash("success", "User updated").redirect(.back)
 	}
 
 	@Sendable static func destroy(req: Request) async throws -> Response {
-		let userId = UUID(uuidString: req.parameters.get("id")!)
-		let user = try await User.find(userId, on: req.db).unwrap(or: Abort(.notFound))
-
+		let user = try await User.find(from: req)
 		try req.auth.require(User.self).authorize(.delete, for: user)
 
 		try await user.delete(on: req.db)
@@ -74,7 +73,6 @@ enum UsersController {
 		try req.auth.require(User.self).authorize(.delete, for: user)
 
 		try await user.restore(on: req.db)
-
 		return try req.flash("success", "User restored").redirect(.back)
 	}
 }
