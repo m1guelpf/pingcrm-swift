@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { route } from 'ziggy-js'
-import { FC, ReactNode } from 'react'
-import { Link } from '@inertiajs/react'
+import { FC, ReactNode, useMemo } from 'react'
+import { Link, usePage } from '@inertiajs/react'
 import { Building, CircleGauge, Printer, Users } from 'lucide-react'
 
 type Props = {
@@ -26,7 +26,12 @@ interface MainMenuItemProps {
 }
 
 const MenuItem = ({ icon, link, text }: MainMenuItemProps) => {
-	const isActive = route().current(link + '*')
+	'use no memo'
+
+	const { url } = usePage()
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	const isActive = useMemo(() => route().current(link + '*'), [url, link])
 
 	return (
 		<div className="mb-4">

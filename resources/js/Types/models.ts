@@ -19,19 +19,17 @@ export type Account = {
 }
 
 export type Contact = {
-	id: number
-	name: string
-	first_name: string
-	last_name: string
+	id: string
+	firstName: string
+	lastName: string
 	email: string
 	phone: string
-	address: string
 	city: string
+	address: string
 	region: string
 	country: string
+	deletedAt: string
 	postal_code: string
-	deleted_at: string
-	organization_id: number
 	organization: Organization
 }
 

@@ -68,9 +68,18 @@ const Table = <T,>({ columns = [], rows = [], getRowDetailsUrl }: TableProps<T>)
 	</div>
 )
 
-const get = <T, K extends keyof T, D>(obj: T, path: K | string, defaultValue: D): T[K] | D => {
-	const value = obj[path as keyof T]
-	return value === undefined ? defaultValue : (value as T[K])
+const get = <T, R, D>(obj: T, path: string, defaultValue: D): R | D => {
+	const paths = path.split('.')
+
+	let current = obj as Record<string, unknown>
+	for (const path of paths) {
+		if (current[path] === undefined) {
+			return defaultValue
+		}
+		current = current[path] as Record<string, unknown>
+	}
+
+	return current as R
 }
 
 export default Table

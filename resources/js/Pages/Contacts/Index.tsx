@@ -35,8 +35,8 @@ const ContactsPage: Page<Props> = ({ contacts }) => {
 						name: 'name',
 						renderCell: row => (
 							<>
-								{row.name}
-								{row.deleted_at && <Trash2 size={16} className="ml-2 text-gray-400" />}
+								{row.firstName} {row.lastName}
+								{row.deletedAt && <Trash2 size={16} className="ml-2 text-gray-400" />}
 							</>
 						),
 					},

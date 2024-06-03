@@ -34,11 +34,12 @@ type PaginationItem = {
 }
 
 const PaginationItem: FC<PaginationItem> = ({ active, label, url }) => {
+	console.log(active, label, url)
 	return (
 		<Link
 			href={url!}
 			className={clsx(
-				active && 'bg-white',
+				!active && 'opacity-50 hover:opacity-90',
 				'text-sm mr-1 mb-1 px-4 py-3 hover:bg-white border border-solid border-gray-300 rounded focus:outline-none focus:border-indigo-700 focus:text-indigo-700'
 			)}
 		>

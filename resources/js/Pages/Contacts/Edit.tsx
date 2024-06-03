@@ -24,10 +24,10 @@ const EditContactPage: Page<Props> = ({ contact, organizations }) => {
 		region: contact.region || '',
 		address: contact.address || '',
 		country: contact.country || '',
-		last_name: contact.last_name || '',
-		first_name: contact.first_name || '',
+		lastName: contact.lastName || '',
+		firstName: contact.firstName || '',
 		postal_code: contact.postal_code || '',
-		organization_id: contact.organization_id || '',
+		organizationId: contact.organization.id || '',
 	})
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -50,38 +50,38 @@ const EditContactPage: Page<Props> = ({ contact, organizations }) => {
 
 	return (
 		<div>
-			<Head title={`${data.first_name} ${data.last_name}`} />
+			<Head title={`${data.firstName} ${data.lastName}`} />
 			<h1 className="mb-8 text-3xl font-bold">
 				<Link href={route('contacts')} className="text-indigo-600 hover:text-indigo-700">
 					Contacts
 				</Link>
 				<span className="mx-2 font-medium text-indigo-600">/</span>
-				{data.first_name} {data.last_name}
+				{data.firstName} {data.lastName}
 			</h1>
-			{contact.deleted_at && <TrashedMessage onRestore={restore}>This contact has been deleted.</TrashedMessage>}
+			{contact.deletedAt && <TrashedMessage onRestore={restore}>This contact has been deleted.</TrashedMessage>}
 			<div className="max-w-3xl overflow-hidden bg-white rounded shadow">
 				<form onSubmit={handleSubmit}>
 					<div className="grid gap-8 p-8 lg:grid-cols-2">
 						<TextInput
 							name="first_name"
 							label="First Name"
-							value={data.first_name}
-							error={errors.first_name}
-							onChange={e => setData('first_name', e.target.value)}
+							value={data.firstName}
+							error={errors.firstName}
+							onChange={e => setData('firstName', e.target.value)}
 						/>
 						<TextInput
 							name="last_name"
 							label="Last Name"
-							value={data.last_name}
-							error={errors.last_name}
-							onChange={e => setData('last_name', e.target.value)}
+							value={data.lastName}
+							error={errors.lastName}
+							onChange={e => setData('lastName', e.target.value)}
 						/>
 						<SelectInput
 							label="Organization"
 							name="organization_id"
-							value={data.organization_id}
-							error={errors.organization_id}
-							onChange={e => setData('organization_id', e.target.value)}
+							value={data.organizationId}
+							error={errors.organizationId}
+							onChange={e => setData('organizationId', e.target.value)}
 							options={[
 								{ value: '', label: '' },
 								...organizations.map(org => ({

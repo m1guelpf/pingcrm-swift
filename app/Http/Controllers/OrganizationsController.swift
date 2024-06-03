@@ -1,12 +1,18 @@
 import Vapor
+import Fluent
 
 enum OrganizationsController {
 	@Sendable static func index(req: Request) async throws -> Response {
-		let emptyArrayPlaceholder: [String] = []
+		let user = try req.auth.require(User.self)
+		let filters = try req.query.decode(Filters.self)
+
+		let organizations = try await Organization.query(on: req.db)
+			.filter(\.$account.$id == user.$account.id)
+			.paginate(for: req)
 
 		return try await req.inertia.render(page: "Organizations/Index", [
-			"filters": emptyArrayPlaceholder, // get search, thrashed from query
-			"organizations": emptyArrayPlaceholder, // paginated and filtered organizations
+			"filters": filters,
+			"organizations": organizations,
 		])
 	}
 
@@ -21,8 +27,7 @@ enum OrganizationsController {
 	}
 
 	@Sendable static func edit(req: Request) async throws -> Response {
-		// @TODO: implement organization fetching
-		let organization: Organization? = nil
+		let organization = try await Organization.find(from: req, with: \.$contacts)
 
 		return try await req.inertia.render(page: "Organizations/Edit", [
 			"organization": organization,

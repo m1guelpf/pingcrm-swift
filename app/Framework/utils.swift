@@ -88,6 +88,24 @@ public extension Model where IDValue == UUID {
 
 		return try await Self.find(uuid, on: request.db).unwrap(or: Abort(.notFound))
 	}
+
+	static func find<E: EagerLoadable>(from request: Request, with relation: KeyPath<Self, E>? = nil) async throws -> Self where E.From == Self {
+		guard let id = request.parameters.get("id") else {
+			throw Abort(.badRequest)
+		}
+
+		guard let uuid = UUID(uuidString: id) else {
+			throw Abort(.badRequest)
+		}
+
+		let query = Self.query(on: request.db).filter(\Self._$id == uuid)
+
+		if let relation = relation {
+			query.with(relation)
+		}
+
+		return try await query.first().unwrap(or: Abort(.notFound))
+	}
 }
 
 public extension Faker.Internet {

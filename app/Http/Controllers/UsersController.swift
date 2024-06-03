@@ -1,17 +1,6 @@
 import Vapor
 import Fluent
 
-struct Filters: Content {
-	enum Thrashed: String, Content {
-		case with
-		case only
-	}
-
-	let role: String?
-	let search: String?
-	let thrashed: Thrashed?
-}
-
 enum UsersController {
 	@Sendable static func index(req: Request) async throws -> Response {
 		let user = try req.auth.require(User.self)
